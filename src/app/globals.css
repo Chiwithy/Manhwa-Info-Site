@@ -7,7 +7,8 @@
   --background: #edf4fd;
   --contrast: #ed6a5a;
   --default-blue: #569ef0;
-  --highlight-blue: #b4d4f8;
+  --button-highlight-blue: #b4d4f8;
+  --bg-highlight-blue: #dbebff;
 }
 
 body {

@@ -1,0 +1,13 @@
+@import url(@/app/globals.css);
+
+input[type="file"] {
+    margin-top: 10px;
+}
+
+small {
+    color: red;
+}
+
+.password-requirements ul {
+    font-style:italic;
+}

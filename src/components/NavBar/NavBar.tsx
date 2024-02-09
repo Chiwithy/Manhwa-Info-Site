@@ -4,18 +4,18 @@ import './NavBar.css';
 const Navbar = () => {
   return (
     <nav>
-      <div className='navBarContainer'>
-      <div className='navBarLeft'>
+      <div className='nav-container'>
+      <div className='nav-left'>
         <ul>
           <li>
-            <Link href="/"> Home </Link>
+            <Link href="/" className='nav-bar-logo'> <img src={"/site-images/logo.png"} className='nav-bar-logo'/> </Link>
           </li>
-          <li className='searchField'>
-          <input className='navBarSearch' type="text" placeholder='Search Manhwa...'/>
+          <li className='search-field'>
+            <input className='nav-bar-search' type="text" placeholder='Search Manhwa...'/>
           </li>
         </ul>
       </div>
-      <div className='navBarRight'>
+      <div className='nav-bar-right'>
         <ul>
           <li>
             <Link href="/about"> About </Link>

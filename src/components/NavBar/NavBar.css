@@ -18,14 +18,14 @@ nav {
   padding-bottom: 20px;
 }
 
-.navBarContainer {
+.nav-container {
   width: 1280px;
   display: flex;
   align-items: center;
   border-bottom: 2px solid var(--text);
 }
   
-.navBarRight {
+.nav-bar-right {
   margin-left: auto;
 }
 
@@ -38,37 +38,51 @@ ul {
 }
 
 li {
-  padding: 20px 20px;
   color: var(--warmGray);
-  margin: 5px;
+  padding: 5px;
+  margin-top: 2px;
   border-radius: 10px;
+  align-items: center;
 }
 
-li:hover {
-  background-color: var(--highlight-blue);
-  cursor: pointer;
-}
-
-a {
-  text-decoration: none;
-}
-
-.navBarSearch {
+.nav-bar-search {
   width: 570px;
   padding: 5px 10px;
   border-radius: 10px;
 }
 
-.searchField:hover {
+.search-field:hover {
   cursor: default;
-  background-color: var(--background)
+  background-color: transparent;
 }
 
-.loginButton {
+.login-button {
   border: 1px solid var(--text);
 }
-.registerButton {
+.register-button {
   border: 1px solid var(--text);
   background-color: var(--text);
   color: var(--background);
+}
+
+.nav-bar-logo {
+  align-items: center;
+  width: 100px;
+}
+
+.nav-bar-logo:hover {
+  background-color: transparent;
+}
+
+a {
+  border-radius: 10px;
+  padding: 15px;
+  text-decoration: none;
+  width: fit-content;
+  display: flex;
+}
+
+a:hover {
+  background-color: var(--bg-highlight-blue);
+  cursor: pointer;
 }

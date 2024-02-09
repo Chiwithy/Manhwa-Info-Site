@@ -14,3 +14,7 @@ body {
   color: var(--text);
   background-color: var(--background);
 }
+
+/* * {
+  border: 1px solid black;
+} */

@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url(../../app/globals.css);
+
+
+/* * {
+  border: 1px solid black;
+} */
+
+nav {
+  width: 100%;
+  background-color: var(--background);
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.navBarContainer {
+  width: 1280px;
+  display: flex;
+  align-items: center;
+}
+  
+.navBarRight {
+  margin-left: auto;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+li {
+  padding: 10px 20px;
+  color: var(--warmGray);
+  margin: 5px;
+  border-radius: 10px;
+}
+
+li:hover {
+  background-color: var(--highlight-blue);
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+}
+
+input[type="text"] {
+  width: 570px;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+.searchField:hover {
+  cursor: default;
+  background-color: var(--background)
+}
+
+.loginButton {
+  border: 1px solid var(--text);
+}
+.registerButton {
+  border: 1px solid var(--text);
+  background-color: var(--text);
+  color: var(--background);
+}

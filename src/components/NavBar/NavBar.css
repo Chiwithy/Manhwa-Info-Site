@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url(../../app/globals.css);
+@import url(@/app/globals.css);
 
 
 /* * {
@@ -15,12 +15,14 @@ nav {
   display: flex;
   justify-content: center;
   font-weight: bold;
+  padding-bottom: 20px;
 }
 
 .navBarContainer {
   width: 1280px;
   display: flex;
   align-items: center;
+  border-bottom: 2px solid var(--text);
 }
   
 .navBarRight {
@@ -36,7 +38,7 @@ ul {
 }
 
 li {
-  padding: 10px 20px;
+  padding: 20px 20px;
   color: var(--warmGray);
   margin: 5px;
   border-radius: 10px;
@@ -51,7 +53,7 @@ a {
   text-decoration: none;
 }
 
-input[type="text"] {
+.navBarSearch {
   width: 570px;
   padding: 5px 10px;
   border-radius: 10px;

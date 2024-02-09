@@ -11,7 +11,7 @@ const Navbar = () => {
             <Link href="/"> Home </Link>
           </li>
           <li className='searchField'>
-          <input type="text" placeholder='Search Manhwa...'/>
+          <input className='navBarSearch' type="text" placeholder='Search Manhwa...'/>
           </li>
         </ul>
       </div>

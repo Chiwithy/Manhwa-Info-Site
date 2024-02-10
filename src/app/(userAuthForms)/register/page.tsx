@@ -3,7 +3,7 @@ import { Metadata } from 'next'
 import './register.css'
 import '../userAuth.css';
 import Link from 'next/link'
-import Header from '@/components/FormHeader/Header';
+import Header from '@/components/FormElements/FormHeader/Header';
 
 export const metadata: Metadata  = {
     title: "IMDb Registration"

@@ -5,7 +5,7 @@ import { Metadata } from 'next'
 import './login.css'
 import '../userAuth.css';
 import Link from 'next/link'
-import Header from '@/components/FormHeader/Header';
+import Header from '@/components/FormElements/FormHeader/Header';
 import { useCounterStore } from '@/stores/userAuthFormStore';
 
 // separate components that use the store

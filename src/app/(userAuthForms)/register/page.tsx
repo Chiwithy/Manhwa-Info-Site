@@ -4,16 +4,14 @@ import './register.css'
 import '../userAuth.css';
 import Link from 'next/link'
 import Header from '@/components/FormElements/FormHeader/Header';
+import TextField from '@/components/FormElements/FormTextField/TextField';
+import SubmitError from '@/components/FormElements/SubmitError/SubmitError';
 
 export const metadata: Metadata  = {
     title: "IMDb Registration"
 }
 
 const page = () => {
-  const usernameError = "Username is invalid";
-  const nameError = "Name contains invalid characters";
-  const emailError = "Email is not valid";
-  const phoneError = "Phone number format is invalid";
   const photoError = "Photo invalid";
 
   return (
@@ -22,48 +20,26 @@ const page = () => {
     <form action="#" method="post" encType="multipart/form-data">
       <div className='input-container'>
         <label htmlFor="name">Name:</label>
-        <input className='input-text-field' type="text" id="name" name="name" required />
-        <small>{nameError}</small>
+        <TextField fieldType="Text" fieldUse="naMe" withError={true}/>
       </div>
 
       <div className='input-container'>
         <label htmlFor="email">Email:</label>
-        <input className='input-text-field' type="email" id="email" name="email" required />
-        <small>{emailError}</small>
+        <TextField fieldType='email' fieldUse='email' withError={true}/>
       </div>
 
       <div className='input-container'>
         <label htmlFor="phone">Phone:</label>
-        <input
-          className='input-text-field'
-          type="tel"
-          id="phone"
-          name="phone"
-          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-          required
-        />
-        <small>Format: 123-456-7890</small><br/>
-        <small>{phoneError}</small>
+        <TextField fieldType='tel' fieldUse='phone' withError={true}/>
       </div>
+
       <div className='input-container'>
         <label htmlFor="username">Username:</label>
-        <input className='input-text-field' type="text" id="username" name="username" required />
-        <small>{usernameError}</small>
+        <TextField fieldType='text' fieldUse='username' withError={true}/>
       </div>
       <div className='input-container'>
         <label htmlFor="password">Password:</label>
-        <input className='input-text-field' type="password" id="password" name="password" required />
-
-        <small className="password-requirements">
-          Password requirements:
-          <ul>
-            <li>- Must be at least 8 characters</li>
-            <li>- At least 1 special character</li>
-            <li>- At least 1 lowercase character</li>
-            <li>- At least 1 uppercase character</li>
-            <li>- At least 1 number</li>
-          </ul>
-        </small>
+        <TextField fieldType='password' fieldUse='password' withError={true}/>
       </div>
 
       <div className='input-container'>
@@ -72,6 +48,7 @@ const page = () => {
         <small>{photoError}</small>
       </div>
       <div className='submit-container'>
+        <SubmitError pageType='register'/>
         <button type="submit" className='button-submit'>Create your account</button>
       </div>
     </form>

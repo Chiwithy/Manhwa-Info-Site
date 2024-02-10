@@ -1,37 +1,32 @@
-"use client"
-
 import React from 'react'
 import { Metadata } from 'next'
 import './login.css'
 import '../userAuth.css';
 import Link from 'next/link'
 import Header from '@/components/FormElements/FormHeader/Header';
-import { useCounterStore } from '@/stores/userAuthFormStore';
+import TextField from '@/components/FormElements/FormTextField/TextField';
+import SubmitError from '@/components/FormElements/SubmitError/SubmitError';
 
-// separate components that use the store
-// export const metadata: Metadata  = {
-//     title: "IMDb Registration"
-// }
+export const metadata: Metadata  = {
+  title: "IMDb Log In",
+}
 
-const page = ({count}: { count: number}) => {
-  // const loginError = useCounterStore ((state) => state.count);
-  const loginError = "You have entered an invalid username or password.";
-
+const page = () => {
   return (
     <>
     <Header headerText="Log In"/>
     <form action="#" method="post" encType="multipart/form-data">
       <div className='input-container'>
         <label htmlFor="username">Username:</label>
-        <input className='input-text-field' type="text" id="username" name="username" required />
+        <TextField fieldType='text' fieldUse='username' withError={false}/>
       </div>
       <div className='input-container'>
         <label htmlFor="password">Password:</label>
-        <input className='input-text-field' type="password" id="password" name="password" required />
+        <TextField fieldType='password' fieldUse='password' withError={false}/>
       </div>
 
       <div className='submit-container'>
-        <small> {loginError} </small>
+        <SubmitError pageType='login'/>
         <button type="submit" className='button-submit'>Log In</button>
       </div>
     </form>

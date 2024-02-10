@@ -5,7 +5,6 @@ import "./userAuth.css";
 import Headtag from "@/components/HeadTag/HeadTag";
 import Image from "next/image";
 import Link from "next/link";
-import Header from "@/components/FormHeader/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 

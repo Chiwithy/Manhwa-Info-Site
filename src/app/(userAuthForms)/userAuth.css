@@ -7,7 +7,7 @@
 .form-container {
     max-width: 400px;
     margin: 0 auto;
-    border: 1px solid var(--lighty);
+    border: 1px solid var(--bright-blue);
     background-color: white;
     border-radius: 10px;
     padding: 20px;
@@ -60,24 +60,6 @@
 
 .input-container  {
     margin-bottom: 15px;
-}
-
-.input-text-field {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    box-sizing: border-box;
-    border: 1px solid var(--default-blue);
-    border-radius: 10px;
-}
-
-.input-text-field:focus {
-    border-width:1px;
-    border-color:  var(--text);
-}
-
-small {
-    color: red;
 }
 
 .submit-container {

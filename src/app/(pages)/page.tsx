@@ -1,4 +1,9 @@
+import { Metadata } from 'next'
 import React from 'react'
+
+export const metadata: Metadata = {
+  title: "IMDb - Internet Manhwa  Database"
+}
 
 const Home = () => {
   return (

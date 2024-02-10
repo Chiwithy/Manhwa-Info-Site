@@ -4,10 +4,11 @@
 
 :root {
   --text: #051d38;
-  --background: #edf4fd;
+  --background: white;
+  --bright-blue: #ccdffa;
   --contrast: #ed6a5a;
   --default-blue: #569ef0;
-  --button-highlight-blue: #b4d4f8;
+  --button-highlight-blue: #6ba7ec;
   --bg-highlight-blue: #dbebff;
 }
 

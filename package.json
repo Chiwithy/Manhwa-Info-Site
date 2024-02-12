@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^16.4.2",
     "mysql2": "^3.9.1",
     "next": "14.1.0",
     "react": "^18",
@@ -16,6 +19,8 @@
     "zustand": "^4.5.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/crypto-js": "^4.2.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

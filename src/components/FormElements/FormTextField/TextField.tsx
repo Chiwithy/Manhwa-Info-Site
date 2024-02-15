@@ -2,9 +2,9 @@
 
 import React from 'react'
 import './TextField.css'
-import { nameRegex, emailRegex, phoneRegex, usernameRegex, passwordRegex } from '@/components/variables/regex/regex'
+import { nameRegex, emailRegex, phoneRegex, usernameRegex, passwordRegex } from '@/components/utility/regex/regex'
 
-interface TextFieldProps  {
+interface TextFieldProps {
     fieldType: string;
     fieldUse: string;
     withError: boolean;
@@ -50,7 +50,6 @@ function getRegexSource (fieldUse: string) {
 }
 
 const TextField: React.FC<TextFieldProps> = ({fieldType, fieldUse, withError}) => {
-    const errorMessage = "Invalid input";
     fieldType = fieldType.toLowerCase ();
     fieldUse = fieldUse.toLowerCase ();
 
@@ -60,8 +59,7 @@ const TextField: React.FC<TextFieldProps> = ({fieldType, fieldUse, withError}) =
 
         return (
             <>
-                <input className='input-text-field' type={fieldType} id={fieldUse} name={fieldUse} title={fieldTitle}  pattern={regEx} required/>
-                <small>{errorMessage}</small>
+                <input className='input-text-field' type={fieldType} id={fieldUse} name={fieldUse} title={fieldTitle} pattern={regEx} required/>
             </>
         )
     } else {

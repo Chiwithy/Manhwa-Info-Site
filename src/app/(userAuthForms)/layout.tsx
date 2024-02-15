@@ -5,6 +5,7 @@ import "./userAuth.css";
 import Headtag from "@/components/HeadTag/HeadTag";
 import Image from "next/image";
 import Link from "next/link";
+import { cookies } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,6 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    
     <html lang="en">
     <Headtag/>
       <body className={inter.className}>

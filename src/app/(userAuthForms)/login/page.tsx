@@ -1,42 +1,33 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Metadata } from 'next'
 import './login.css'
 import '../userAuth.css';
-import Link from 'next/link'
-import Header from '@/components/FormElements/FormHeader/Header';
-import TextField from '@/components/FormElements/FormTextField/TextField';
-import SubmitError from '@/components/FormElements/SubmitError/SubmitError';
+import LoginForm from '@/components/Forms/LoginForm/LoginForm';
+import { cookies } from 'next/headers';
+import { insertSessionActivity } from '@/components/utility/functions/cookieFunctions';
+import { checkIfLoggedInCookies } from '@/components/utility/functions/authFunctions';
+import RedirectToHome from '@/components/RedirectToHome/page';
 
 export const metadata: Metadata  = {
   title: "IMDb Log In",
 }
 
-const page = () => {
-  return (
-    <>
-    <Header headerText="Log In"/>
-    <form action="#" method="post" encType="multipart/form-data">
-      <div className='input-container'>
-        <label htmlFor="username">Username:</label>
-        <TextField fieldType='text' fieldUse='username' withError={false}/>
-      </div>
-      <div className='input-container'>
-        <label htmlFor="password">Password:</label>
-        <TextField fieldType='password' fieldUse='password' withError={false}/>
-      </div>
 
-      <div className='submit-container'>
-        <SubmitError pageType='login'/>
-        <button type="submit" className='button-submit'>Log In</button>
-      </div>
-    </form>
-    <hr className='hr-separator'/>
-    <div className='alternate-container'>
-      <p>New to IMDb?</p>
-      <Link href="/register" className='alternate-button'> Create your account </Link>
-    </div>
-    </>
-  )
+const page = async () => {
+  await insertSessionActivity (cookies ());
+  const isLoggedIn = await checkIfLoggedInCookies (cookies ());
+  if (!isLoggedIn) {
+    return (
+      <>
+      <LoginForm/>
+      </>
+    )
+  }
+  else {
+    return (
+      <RedirectToHome/>
+    )
+  }
 }
 
 export default page;

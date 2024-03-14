@@ -1,7 +1,15 @@
 import Link from 'next/link';
 import './NavBar.css';
+import React from 'react';
+import LoggedIn from './LoggedIn';
 
-const Navbar = () => {
+interface NavBarProps {
+  isLoggedIn: boolean;
+  isAdmin: boolean;
+}
+
+
+const Navbar: React.FC<NavBarProps> = ({isLoggedIn, isAdmin}) => {
   return (
     <nav>
       <div className='nav-container'>
@@ -23,9 +31,20 @@ const Navbar = () => {
           <li>
             <Link href="/manhwas"> Manhwas </Link>
           </li>
-          <li>
-            <Link href="/login"> Login </Link>
-          </li>
+          {isLoggedIn && isAdmin ? (
+            <li>
+              <Link href="/admin-panel"> Admin Panel </Link>
+            </li>
+            ) : (<></>)
+          }
+          {isLoggedIn ? (
+            <LoggedIn username="wahaha"/>
+          ) : (
+            <li>
+            <Link href="/login"> Log In </Link>
+            </li>
+          )
+          }
         </ul>
       </div>
       </div>

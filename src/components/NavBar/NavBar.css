@@ -49,6 +49,7 @@ li {
   width: 570px;
   padding: 5px 10px;
   border-radius: 10px;
+  border: 2px solid var(--bg-highlight-blue);
 }
 
 .search-field:hover {
@@ -74,7 +75,7 @@ li {
   background-color: transparent;
 }
 
-a {
+a, p {
   border-radius: 10px;
   padding: 15px;
   text-decoration: none;
@@ -82,7 +83,7 @@ a {
   display: flex;
 }
 
-a:hover {
+a:hover, p:hover {
   background-color: var(--bg-highlight-blue);
   cursor: pointer;
 }

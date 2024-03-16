@@ -26,7 +26,7 @@ const LoggedIn: React.FC<{username: string}> = ({username}) => {
     }
   return (
     <> <li>
-        <Link href={"/user/" + username}> My Account </Link>
+        <Link href={"/user/" + username} className="nav-bar-link"> My Account </Link>
     </li>
     <li>
         <p onClick={logOutUser}> Log Out </p>

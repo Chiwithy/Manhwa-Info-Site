@@ -41,7 +41,7 @@ const RegisterForm = () => {
       formData.set ('image', file);
     }
 
-      const response = await fetch ('/api/authRegister', {
+      const response = await fetch (process.env.NEXT_PUBLIC_URL + '/api/authRegister', {
         method: 'POST',
         body: formData,
       });

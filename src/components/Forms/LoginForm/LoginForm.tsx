@@ -20,7 +20,7 @@ const LoginForm = () => {
     data.username = encrypt (data.username.toString ());
 
     try {
-      const response = await fetch ('/api/authLogin', {
+      const response = await fetch (process.env.NEXT_PUBLIC_URL + '/api/authLogin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -26,14 +26,14 @@ const Navbar: React.FC<NavBarProps> = ({isLoggedIn, isAdmin}) => {
       <div className='nav-bar-right'>
         <ul>
           <li>
-            <Link href="/about"> About </Link>
+            <Link href="/about" className="nav-bar-link"> About </Link>
           </li>
           <li>
-            <Link href="/manhwas"> Manhwas </Link>
+            <Link href="/manhwas" className="nav-bar-link"> Manhwas </Link>
           </li>
           {isLoggedIn && isAdmin ? (
             <li>
-              <Link href="/admin-panel"> Admin Panel </Link>
+              <Link href="/admin-panel" className="nav-bar-link"> Admin Panel </Link>
             </li>
             ) : (<></>)
           }
@@ -41,7 +41,7 @@ const Navbar: React.FC<NavBarProps> = ({isLoggedIn, isAdmin}) => {
             <LoggedIn username="wahaha"/>
           ) : (
             <li>
-            <Link href="/login"> Log In </Link>
+            <Link href="/login" className="nav-bar-link"> Log In </Link>
             </li>
           )
           }

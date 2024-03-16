@@ -1,0 +1,49 @@
+.panel-choice-container {
+    display: grid;
+    justify-content: center;
+    margin-top: 40px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.panel-choice-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.panel-button-container {
+    display: flex;
+}
+
+.button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.button-user, .button-manhwa {
+    width: 250px;
+}
+
+.button-user {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    font-weight: 500;
+}
+
+.button-user:hover {
+    background-color: #60c463;
+}
+
+.button-manhwa {
+    background-color: var(--default-blue);
+    color: white;
+    border: none;
+    font-weight: 500;
+}
+
+.button-manhwa:hover {
+    background-color: var(--button-highlight-blue);
+}

@@ -4,15 +4,16 @@ import Navbar from "@/components/NavBar/NavBar";
 import Headtag from "@/components/HeadTag/HeadTag";
 import { cookies } from "next/headers";
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
-import { checkIfAdminCookies, checkIfLoggedInCookies } from "@/components/utility/functions/authFunctions";
+import { checkIfAdmin, checkIfLoggedIn } from "@/components/utility/functions/authFunctions";
 import { notFound } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
 async function getAccess (cookieStore: ReadonlyRequestCookies): Promise<[boolean, boolean]> {
-  const isLoggedIn = await checkIfLoggedInCookies (cookieStore);
+  const sessionToken = cookieStore.get ('session')!.value;
+  const isLoggedIn = await checkIfLoggedIn (sessionToken);
   if (isLoggedIn) {
-    const isAdmin = await checkIfAdminCookies (cookieStore);
+    const isAdmin = await checkIfAdmin (sessionToken);
 
     if (isAdmin) {
       return [true, true];
@@ -36,7 +37,9 @@ export default async function RootLayout({
       <Headtag/>
       <body className={inter.className}>
         {isLoggedIn && isAdmin ? (<Navbar isLoggedIn={isLoggedIn as boolean} isAdmin={isAdmin as boolean}/>) : (<></>) }
-        {children}
+        <div className="container-tainer"><div className="children-container">
+          {children}
+        </div></div>
       </body>
     </html>
   );

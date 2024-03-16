@@ -1,5 +1,5 @@
-import { checkUsernameExists, checkUsernameLogin } from '@/utils/dbCheckActions';
-import { getStoredPassword } from '@/utils/dbSelectActions';
+import { dbCheckUsernameExists, dbCheckUsernameCredential } from '@/utils/dbCheckActions';
+import { dbGetStoredPassword } from '@/utils/dbSelectActions';
 import bcrypt from 'bcrypt';
 
 export async function hashSalt (text: string): Promise<string> {
@@ -13,10 +13,10 @@ export async function hashSalt (text: string): Promise<string> {
 
 export async function authLogin (usernameDecrypted: string, passwordDecrypted: string): Promise<boolean> {
     try {
-        const usernameCorrect = await checkUsernameLogin (usernameDecrypted);
+        const usernameCorrect = await dbCheckUsernameCredential (usernameDecrypted);
 
         if (usernameCorrect) {
-            const hashedPassword = await getStoredPassword (usernameDecrypted);
+            const hashedPassword = await dbGetStoredPassword (usernameDecrypted);
             const passwordCorrect = await bcrypt.compare (passwordDecrypted, hashedPassword);
             return passwordCorrect;
         }

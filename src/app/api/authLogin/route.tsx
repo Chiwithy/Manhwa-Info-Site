@@ -1,10 +1,10 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { decrypt } from '@/components/utility/functions/encryptFunctions';
 import { validatePassword, validateUsername } from '@/components/utility/regex/regex';
 import { insertSessionActivityPOST } from '@/components/utility/functions/cookieFunctions';
 import { authLogin, hashSalt } from '@/components/utility/functions/passwordFunctions';
-import { updateUserSession } from '@/utils/dbUpdateActions';
-import { checkIfLoggedInReq } from '@/components/utility/functions/authFunctions';
+import { dbUpdateUserSession } from '@/utils/dbUpdateActions';
+import { checkIfLoggedIn } from '@/components/utility/functions/authFunctions';
 
 
 function isDataValid (username: string, password: string) {
@@ -14,10 +14,11 @@ function isDataValid (username: string, password: string) {
   return (validateUsername (usernameDecrypted) && validatePassword (passwordDecrypted))
 }
 
-export async function POST (req: any) {
+export async function POST (req: NextRequest) {
   try {
     const body = await req.json ();
-    const isLoggedIn = await checkIfLoggedInReq (req);
+    const sessionToken = req.cookies.get ('session')!.value
+    const isLoggedIn = await checkIfLoggedIn (sessionToken);
     await insertSessionActivityPOST (req);
 
     if (isLoggedIn) {
@@ -31,7 +32,7 @@ export async function POST (req: any) {
 
       if (foundUser) {  
         console.log ("good now handle successful login");
-        const updateSuccess = await updateUserSession (req.cookies.get ('session')!.value, usernameDecrypted);
+        const updateSuccess = await dbUpdateUserSession (req.cookies.get ('session')!.value, usernameDecrypted);
         if (updateSuccess !== -1)
           return NextResponse.json ({message: "nc login"}, {status: 200})
         else

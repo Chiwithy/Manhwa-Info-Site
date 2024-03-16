@@ -3,17 +3,17 @@ import { validateName, validateEmail, validatePhone, validateUsername, validateP
 import { decrypt } from '@/components/utility/functions/encryptFunctions';
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
-import { insertUser, insertUserCredentials } from '@/utils/dbInsertActions';
-import { checkEmailExists, checkUsernameExists } from '@/utils/dbCheckActions';
-import { updateProfilePhoto } from '@/utils/dbUpdateActions';
+import { dbInsertUserInfo, dbInsertUserCredentials } from '@/utils/dbInsertActions';
+import { dbCheckEmailExists, dbCheckUsernameExists } from '@/utils/dbCheckActions';
+import { dbUpdateProfilePhoto } from '@/utils/dbUpdateActions';
 import { insertSessionActivityPOST } from '@/components/utility/functions/cookieFunctions';
 import { hashSalt } from '@/components/utility/functions/passwordFunctions';
-import { checkIfLoggedInReq } from '@/components/utility/functions/authFunctions';
+import { checkIfLoggedIn } from '@/components/utility/functions/authFunctions';
 
 async function isNoDuplicate (username: string, email: string) {
-    const uExist = await checkUsernameExists (username);
-    const eExist = await checkEmailExists (decrypt (email));
-    return (!(await checkUsernameExists (username)) && !(await checkEmailExists (email)));
+    const uExist = await dbCheckUsernameExists (username);
+    const eExist = await dbCheckEmailExists (decrypt (email));
+    return (!(await dbCheckUsernameExists (username)) && !(await dbCheckEmailExists (email)));
 }
 
 function isDataValid (name: string, email: string, phone: string, username: string, password: string) {
@@ -26,7 +26,7 @@ function isDataValid (name: string, email: string, phone: string, username: stri
 
 export async function POST (req: NextRequest){
     try {
-        const isLoggedIn = await checkIfLoggedInReq (req);
+        const isLoggedIn = await checkIfLoggedIn (req.cookies.get ('session')!.value);
         await insertSessionActivityPOST (req);
 
         if (isLoggedIn) {
@@ -49,14 +49,13 @@ export async function POST (req: NextRequest){
         if (isDataValid (user_name as string, user_email as string, user_phone as string, user_username as string, user_password as string)) {
             const noDupes = await isNoDuplicate (user_username as string, user_email as string);
             if (noDupes) {
-                const defaultPath = join ('public', 'site-images', 'defaultDP.jpg');
-                const userId = await insertUser (user_name as string, decrypt (user_email as string) as string, decrypt (user_phone as string) as string, defaultPath);
+                const userId = await dbInsertUserInfo (user_name as string, decrypt (user_email as string) as string, decrypt (user_phone as string) as string, 'defaultDP.jpg');
                 const cryptedPassword = await hashSalt (decrypt (user_password as string));
 
                 if (userId === -1)
                     throw new Error ("Error inserting user check error above");
 
-                const affectedRows = await insertUserCredentials (userId, user_username as string, cryptedPassword as string);
+                const affectedRows = await dbInsertUserCredentials (userId, user_username as string, cryptedPassword as string);
 
                 if (affectedRows !== 1)
                     throw new Error ("Error in inserting user creds, affected rows: " + affectedRows.toString ());
@@ -74,7 +73,7 @@ export async function POST (req: NextRequest){
                         const fileName = "profile-" + userId.toString () + "." + parts[parts.length - 1];
                         const path = join ('public', 'user-images', fileName);
                         await writeFile (path, buffer);
-                        const updateSuccess = await updateProfilePhoto (userId, path);
+                        const updateSuccess = await dbUpdateProfilePhoto (userId, fileName);
                         
                         if (updateSuccess === -1)
                             throw new Error ("Error in updating profile photo");

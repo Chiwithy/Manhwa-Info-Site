@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateSessionToken } from "./components/utility/functions/cookieFunctions";
-import { insertActivity } from "./utils/dbInsertActions";
+import { dbInsertActivity } from "./utils/dbInsertActions";
 import { connect } from "./utils/db";
 import mysql, { Connection } from 'mysql2/promise';
 

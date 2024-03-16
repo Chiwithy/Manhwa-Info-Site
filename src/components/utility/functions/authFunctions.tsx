@@ -1,49 +1,36 @@
-import { checkIfTokenAdmin, checkIfTokenLoggedIn } from "@/utils/dbCheckActions";
-import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
-import { NextRequest } from "next/server";
+import { dbCheckIfManhwaAdmin, dbCheckIfTokenLoggedIn, dbCheckIfUserAdmin } from "@/utils/dbCheckActions";
 
-export async function checkIfLoggedInReq (req: NextRequest): Promise<boolean> {
+export async function checkIfLoggedIn (sessionToken: string) {
     try {
-        const sessionToken = req.cookies.get ('session')!.value;
-        return await checkIfTokenLoggedIn (req.cookies.get ('session')!.value);
-    }
-    catch (error) {
+        return await dbCheckIfTokenLoggedIn (sessionToken);
+    } catch (error) {
         console.error ("Error in checkIfLoggedIn: ", error);
         return false;
     }
 }
 
-export async function checkIfLoggedInCookies (cookieStore: ReadonlyRequestCookies) {
+export async function checkIfAdmin (sessionToken: string) {
     try {
-        return await checkIfTokenLoggedIn (cookieStore.get ('session')!.value);
+        const [isUserAdmin, isManhwaAdmin] = await Promise.all ([checkIfUserAdmin (sessionToken), checkIfManhwaAdmin (sessionToken)]);
+        return (isUserAdmin || isManhwaAdmin);
     } catch (error) {
-        console.error ("Error in checkIfLoggedInCookies: ", error);
+        console.error ("Error in checkIfAdmin: ", error);
         return false;
     }
 }
 
-export async function checkIfAdminReq (req: NextRequest): Promise<boolean> {
+export async function checkIfUserAdmin (sessionToken: string) {
     try {
-        const isLoggedIn = await checkIfLoggedInReq (req);
-        if (isLoggedIn)
-            return await checkIfTokenAdmin (req.cookies.get ('session')!.value);
-
-        return false;
+        return await dbCheckIfUserAdmin (sessionToken);
     } catch (error) {
-        console.error ("Erorr in checkIfAdmin: ", error);
-        return false;
+        console.error ("Error in checking user admin");
     }
 }
 
-export async function checkIfAdminCookies (cookieStore: ReadonlyRequestCookies) {
+export async function checkIfManhwaAdmin (sessionToken: string) {
     try {
-        const isLoggedIn = await checkIfLoggedInCookies (cookieStore);
-        if (isLoggedIn)
-            return await checkIfTokenAdmin (cookieStore.get ('session')!.value);
-
-        return false;
+        return await dbCheckIfManhwaAdmin (sessionToken);
     } catch (error) {
-        console.error ("Error in checkIfAdminCookies: ", error);
-        return false;
+        console.error ("Error in checking manhwa admin");
     }
 }

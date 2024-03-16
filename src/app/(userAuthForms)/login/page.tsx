@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
+import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import { Metadata } from 'next'
 import './login.css'
 import '../userAuth.css';
 import LoginForm from '@/components/Forms/LoginForm/LoginForm';
 import { cookies } from 'next/headers';
 import { insertSessionActivity } from '@/components/utility/functions/cookieFunctions';
-import { checkIfLoggedInCookies } from '@/components/utility/functions/authFunctions';
+import { checkIfLoggedIn } from '@/components/utility/functions/authFunctions';
 import RedirectToHome from '@/components/RedirectToHome/page';
 
 export const metadata: Metadata  = {
@@ -14,8 +15,11 @@ export const metadata: Metadata  = {
 
 
 const page = async () => {
-  await insertSessionActivity (cookies ());
-  const isLoggedIn = await checkIfLoggedInCookies (cookies ());
+  const cookieStore: ReadonlyRequestCookies = cookies ();
+  const sessionToken = cookieStore.get ('session')!.value
+  await insertSessionActivity (cookieStore);
+  const isLoggedIn = await checkIfLoggedIn (sessionToken);
+  
   if (!isLoggedIn) {
     return (
       <>

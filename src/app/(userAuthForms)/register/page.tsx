@@ -5,17 +5,21 @@ import '../userAuth.css';
 import RegisterForm from '@/components/Forms/RegisterForm/RegisterForm';
 import { cookies } from 'next/headers';
 import { insertSessionActivity } from '@/components/utility/functions/cookieFunctions';
-import { checkIfLoggedInCookies } from '@/components/utility/functions/authFunctions';
+import { checkIfLoggedIn } from '@/components/utility/functions/authFunctions';
 import { NextResponse } from 'next/server';
 import RedirectToHome from '@/components/RedirectToHome/page';
+import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 
 export const metadata: Metadata  = {
     title: "IMDb Registration"
 }
 
 const page = async () => {
-  await insertSessionActivity (cookies ());
-  const isLoggedIn = await checkIfLoggedInCookies (cookies ());
+  const cookieStore: ReadonlyRequestCookies = cookies ();
+  const sessionToken = cookieStore.get ('session')!.value
+  await insertSessionActivity (cookieStore);
+  const isLoggedIn = await checkIfLoggedIn (sessionToken);
+  
   if (!isLoggedIn) {
     return (
       <>

@@ -1,6 +1,6 @@
 import { connect } from "./db";
 
-export async function getUserIdUsername (username: string): Promise<number> {
+export async function dbGetUserIdUsername (username: string): Promise<number> {
     try {
         const connection = await connect ();
         const selectQuery = 'SELECT `user_id` AS `userId` FROM `user_credentials` WHERE `user_username` = ? AND `user_active` = ?';
@@ -12,12 +12,12 @@ export async function getUserIdUsername (username: string): Promise<number> {
         else
             return rows[0].userId;
     } catch (error) {
-        console.error ("Error at getUserIdUsername: ", error);
+        console.error ("Error at dbGetUserIdUsername: ", error);
         return -1
     }
 }
 
-export async function getStoredPassword (username: string): Promise<string> {
+export async function dbGetStoredPassword (username: string): Promise<string> {
     try {
         const connection = await connect ();
         const selectQuery = 'SELECT `user_password` AS `userPassword` FROM `user_credentials` WHERE `user_username` = ? AND `user_active` = ?';
@@ -29,12 +29,12 @@ export async function getStoredPassword (username: string): Promise<string> {
         else
             return rows[0].userPassword;
     } catch (error) {
-        console.error ("Error at getStoredPassword: ", error);
+        console.error ("Error at dbGetStoredPassword: ", error);
         return "err";
     }
 }
 
-export async function getUserIdSession (token: string) {
+export async function dbGetUserIdSession (token: string) {
     try {
         const connection = await connect ();
         const selectQuery = 'SELECT `user_id` AS `userId` FROM `user_session` WHERE `session_id` = ? AND `session_expiry` > NOW()';
@@ -46,7 +46,7 @@ export async function getUserIdSession (token: string) {
         else
             return rows[0].userId;
     } catch (error) {
-        console.error ("Error at getUserIdSession: ", error);
+        console.error ("Error at dbGetUserIdSession: ", error);
         return -1
     }
 }

@@ -1,8 +1,8 @@
 import { NextRequest } from "next/server";
 import { connect } from "./db";
-import { getUserIdSession, getUserIdUsername } from "./dbSelectActions";
+import { dbGetUserIdSession, dbGetUserIdUsername } from "./dbSelectActions";
 
-export async function checkUsernameExists (username: string): Promise<boolean> {
+export async function dbCheckUsernameExists (username: string): Promise<boolean> {
     try {
         const connection = await connect ();
         const checkQuery = 'SELECT COUNT(*) AS `count` FROM `user_credentials` WHERE `user_username` = ? AND `user_active` = ?';
@@ -12,12 +12,12 @@ export async function checkUsernameExists (username: string): Promise<boolean> {
         return (rows[0].count >= 1);
     }
     catch (error) {
-        console.error ("Error checkUsernameExists: ", error);
+        console.error ("Error dbCheckUsernameExists: ", error);
         return true;
     }
 }
 
-export async function checkEmailExists (email: string): Promise<boolean> {
+export async function dbCheckEmailExists (email: string): Promise<boolean> {
     try {
         const connection = await connect ();
         const getUserIDQuery = 'SELECT `user_id` AS `userId` FROM `user_info` WHERE `user_email` = ? ORDER BY `user_id` DESC LIMIT 1';
@@ -36,12 +36,12 @@ export async function checkEmailExists (email: string): Promise<boolean> {
             return (rows2[0].count >= 1);
         }
     } catch (error) {
-        console.error ("Error checkEmailExists: ", error);
+        console.error ("Error dbCheckEmailExists: ", error);
         return true;
     }
 }
 
-export async function checkIfAdminUserId (userId: number): Promise<boolean> {
+export async function dbCheckIfAdminUserId (userId: number): Promise<boolean> {
     try {
         const connection = await connect ();
         const checkQuery = 'SELECT COUNT(*) AS `count` FROM `admin_info` WHERE `user_id` = ? AND `admin_info_start_date` < NOW() AND (`admin_info_end_date` IS NULL OR `admin_info_end_date` > NOW())';
@@ -50,36 +50,36 @@ export async function checkIfAdminUserId (userId: number): Promise<boolean> {
 
         return (rows[0].count >= 1);
     } catch (error) {
-        console.error ("Error checkIfAdminUserId: ", error);
+        console.error ("Error dbCheckIfAdminUserId: ", error);
         return false;
     }
 }
 
-export async function checkIfAdminUsername (username: string): Promise<boolean> {
+export async function dbCheckIfAdminUsername (username: string): Promise<boolean> {
     try {
-        const userId = await getUserIdUsername (username);
-        return await checkIfAdminUserId (userId);
+        const userId = await dbGetUserIdUsername (username);
+        return await dbCheckIfAdminUserId (userId);
     } catch (error) {
-        console.error ("Error checkIfAdminUsername: ", error);
+        console.error ("Error dbCheckIfAdminUsername: ", error);
         return false;
     }
 }
 
-export async function checkIfTokenExists (token: string): Promise<boolean> {
+export async function dbCheckIfTokenExists (sessionToken: string): Promise<boolean> {
     try {
         const connection = await connect ();
         const checkQuery = 'SELECT COUNT(*) AS `count` FROM `user_session` WHERE `session_id` = ? AND `session_expiry` >= NOW()';
-        const [rows, fields] = await connection.execute (checkQuery, [token]);
+        const [rows, fields] = await connection.execute (checkQuery, [sessionToken]);
         connection.end ();
 
         return (rows[0].count >= 1);
     } catch (error) {
-        console.error ("Error checkIfTokenExists: ", error);
+        console.error ("Error dbCheckIfTokenExists: ", error);
         return true;
     }
 }
 
-export async function checkLoginCredentials (username: string, password: string) {
+export async function dbCheckLoginCredentials (username: string, password: string) {
     try {
         const connection = await connect ();
         const checkQuery = 'SELECT COUNT(*) AS `count` FROM `user_credentials` WHERE `user_username` = ? AND `user_password` = ? AND `user_active` = ?';
@@ -88,12 +88,12 @@ export async function checkLoginCredentials (username: string, password: string)
 
         return (rows[0].count >= 1);
     } catch (error) {
-        console.error ("Error checkLoginCredentials: ", error);
+        console.error ("Error dbCheckLoginCredentials: ", error);
         return true;
     }
 }
 
-export async function checkUsernameLogin (username: string) {
+export async function dbCheckUsernameCredential (username: string) {
     try {
         const connection = await connect ();
         const checkQuery = 'SELECT COUNT(*) AS `count` FROM `user_credentials` WHERE `user_username` = ? AND `user_active` = ?';
@@ -103,40 +103,57 @@ export async function checkUsernameLogin (username: string) {
         return (rows[0].count >= 1);
     }
     catch (error) {
-        console.error ("Error checkUsernameLogin: ", error);
+        console.error ("Error dbCheckUsernameCredential: ", error);
         return false;
     }
 }
 
-export async function checkIfTokenLoggedIn (token: string) {
+export async function dbCheckIfTokenLoggedIn (sessionToken: string) {
     try {
         const connection = await connect ();
         const checkQuery = 'SELECT COUNT(*) AS `count` FROM `user_session` WHERE `session_id` = ? AND `user_id` IS NOT NULL AND `session_expiry` > NOW()';
-        const [rows, fields] = await connection.execute (checkQuery, [token]);
+        const [rows, fields] = await connection.execute (checkQuery, [sessionToken]);
         connection.end ();
 
         return (rows[0].count >= 1);
     } catch (error) {
-        console.error ("Error in checkIfUser: ", error);
+        console.error ("Error in dbCheckIfTokenLoggedIn: ", error);
         return false;
     }
 }
 
-//ASSUMED TOKEN IS ALRDY LOGGED USER (use ONLY AFTER checking user)
-export async function checkIfTokenAdmin (token: string) {
+export async function dbCheckIfUserAdmin (sessionToken: string) {
     try {
-        const loggedUserId = await getUserIdSession (token);
+        const loggedUserId = await dbGetUserIdSession (sessionToken);
         if (loggedUserId === -1)
             throw new Error ("User is not logged in");
 
         const connection = await connect ();
-        const checkQuery = 'SELECT COUNT(*) AS `count` FROM `admin_info` WHERE `user_id` = ? AND `admin_info_start_date` < NOW() AND (`admin_info_end_date` > NOW() OR `admin_info_end_date` IS NULL)';
+        const checkQuery = 'SELECT COUNT(*) AS `count` FROM `user_admin_info` WHERE `user_id` = ? AND `user_admin_start_date` < NOW() AND (`user_admin_end_date` > NOW() OR `user_admin_end_date` IS NULL)';
         const [rows, fields] = await connection.execute (checkQuery, [loggedUserId]);
         connection.end ();
 
         return (rows[0].count >= 1);
     } catch (error) {
-        console.error ("Error in checkIfAdmin: ", error);
+        console.error ("Error in checkIfTokenUserAdmin: ", error);
+        return false;
+    }
+}
+
+export async function dbCheckIfManhwaAdmin (sessionToken: string) {
+    try {
+        const loggedUserId = await dbGetUserIdSession (sessionToken);
+        if (loggedUserId === -1)
+            throw new Error ("User is not logged in");
+
+        const connection = await connect ();
+        const checkQuery = 'SELECT COUNT(*) AS `count` FROM `manhwa_admin_info` WHERE `user_id` = ? AND `manhwa_admin_start_date` < NOW() AND (`manhwa_admin_end_date` > NOW() OR `manhwa_admin_end_date` IS NULL)';
+        const [rows, fields] = await connection.execute (checkQuery, [sessionToken]);
+        connection.end ();
+
+        return (rows[0].count >= 1);
+    } catch (error) {
+        console.error ("Error in dbCheckIfManhwaAdmin: ", error);
         return false;
     }
 }

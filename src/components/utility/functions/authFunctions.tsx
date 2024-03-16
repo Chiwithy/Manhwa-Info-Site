@@ -12,6 +12,7 @@ export async function checkIfLoggedIn (sessionToken: string) {
 export async function checkIfAdmin (sessionToken: string) {
     try {
         const [isUserAdmin, isManhwaAdmin] = await Promise.all ([checkIfUserAdmin (sessionToken), checkIfManhwaAdmin (sessionToken)]);
+        
         return (isUserAdmin || isManhwaAdmin);
     } catch (error) {
         console.error ("Error in checkIfAdmin: ", error);

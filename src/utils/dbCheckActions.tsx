@@ -148,7 +148,7 @@ export async function dbCheckIfManhwaAdmin (sessionToken: string) {
 
         const connection = await connect ();
         const checkQuery = 'SELECT COUNT(*) AS `count` FROM `manhwa_admin_info` WHERE `user_id` = ? AND `manhwa_admin_start_date` < NOW() AND (`manhwa_admin_end_date` > NOW() OR `manhwa_admin_end_date` IS NULL)';
-        const [rows, fields] = await connection.execute (checkQuery, [sessionToken]);
+        const [rows, fields] = await connection.execute (checkQuery, [loggedUserId]);
         connection.end ();
 
         return (rows[0].count >= 1);
